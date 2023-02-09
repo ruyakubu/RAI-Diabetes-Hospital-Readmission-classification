@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+name: aml_rai_environment
+image: mcr.microsoft.com/azureml/curated/responsibleai-0.21-ubuntu20.04-py38-cpu:4:latest
+conda_file: conda.yml
