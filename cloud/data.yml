@@ -1,9 +1,9 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
 name: training_data
 description: RAI hospital train data
-path: ../data/train_dataset.parquet
+path: ./data/train_dataset.parquet
 type: uri_folder
 name: testing_data
 description: RAI hospital test data.
-path: ../data/test_dataset.parquet
+path: ./data/test_dataset.parquet
 type: uri_folder
