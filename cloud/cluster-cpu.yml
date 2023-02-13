@@ -1,0 +1,7 @@
+$schema: https://azuremlschemas.azureedge.net/latest/amlCompute.schema.json
+name: cluster-cpu
+type: amlcompute
+size: Standard_DS2_v2
+location: westus2
+min_instances: 0
+max_instances: 4

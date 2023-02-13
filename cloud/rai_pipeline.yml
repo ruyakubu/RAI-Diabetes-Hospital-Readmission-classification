@@ -1,0 +1,100 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+experiment_name: RAI_CLI_Diabetes_Hospital_Readmission
+type: pipeline
+
+inputs:
+  target_column_name: readmit_status
+  my_training_data:
+    type: uri_file
+    path: ../data/train_dataset.parquet
+    mode: download
+  my_test_data:
+    type: uri_file
+    path: ../data/test_dataset.parquet
+    mode: download
+
+settings:
+  default_datastore: azureml:workspaceblobstore
+  default_compute: azureml:cpucluster
+  continue_on_step_failure: false
+
+jobs:
+  train_model_job:
+    type: command
+    component: azureml:train_logistic_regression_for_rai:1
+    inputs:
+      training_data: ${{parent.inputs.my_training_data}}
+      target_column_name: ${{parent.inputs.target_column_name}}
+
+
+  register_model_job:
+    type: command
+    component: azureml:register_model:1
+    inputs:
+      model_input_path: ${{parent.jobs.train_model_job.outputs.model_output}}
+      model_base_name: rai_hospital_model
+
+  create_rai_job:
+    type: command
+    component: azureml:microsoft_azureml_rai_tabular_insight_constructor:1
+    limits:
+      timeout: 120
+    inputs:
+      title: With just the OSS
+      task_type: classification
+      #model_info_path: ${{parent.jobs.register_model_job.outputs.model_info_output_path}}
+      model_info_path: Input(type=AssetTypes.MLFLOW_MODEL, path=azureml_model_id)
+      train_dataset: ${{parent.inputs.my_training_data}}
+      test_dataset: ${{parent.inputs.my_test_data}}
+      target_column_name: ${{parent.inputs.target_column_name}}
+      categorical_column_names: '["race", "gender", "age", "discharge_destination", "primary_diagnosis", "max_glu_serum", "A1Cresult", "insulin", "diabetes_Med_prescribe", "medicare", "medicaid"]'
+
+  explain_01:
+    type: command
+    component: azureml:microsoft_azureml_rai_tabular_explanation:1
+    limits:
+      timeout: 120
+    inputs:
+      comment: Some random string
+      rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
+
+  causal_01:
+    type: command
+    component: azureml:microsoft_azureml_rai_tabular_causal:1
+    limits:
+      timeout: 120
+    inputs:
+      rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
+      treatment_features: '["time_in_hospital"]'
+
+
+  counterfactual_01:
+    type: command
+    component: azureml:microsoft_azureml_rai_tabular_counterfactual:1
+    limits:
+      timeout: 600
+    inputs:
+      rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
+      total_CFs: 10
+      desired_class: opposite
+
+  error_analysis_01:
+    type: command
+    component: azureml:microsoft_azureml_rai_tabular_erroranalysis:1
+    limits:
+      timeout: 120
+    inputs:
+      rai_insights_dashboard: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
+
+
+  gather_01:
+    type: command
+    component: azureml:microsoft_azureml_rai_tabular_insight_gather:1
+    limits:
+      timeout: 120
+    inputs:
+      constructor: ${{parent.jobs.create_rai_job.outputs.rai_insights_dashboard}}
+      insight_1: ${{parent.jobs.causal_01.outputs.causal}}
+      insight_2: ${{parent.jobs.counterfactual_01.outputs.counterfactual}}
+      insight_3: ${{parent.jobs.error_analysis_01.outputs.error_analysis}}
+      insight_4: ${{parent.jobs.explain_01.outputs.explanation}}
