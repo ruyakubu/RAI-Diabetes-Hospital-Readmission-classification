@@ -20,8 +20,29 @@ echo 'Submitting the training job...'
 
 run_id=$(az ml job create -f cloud/training_job.yml --query name -o tsv)
 
+# wait for job to finish while checking for status
+if [[ -z "$run_id" ]]
+then
+  echo "Job creation failed"
+  exit 3
+fi
+status=$(az ml job show -n $run_id --query status -o tsv)
+if [[ -z "$status" ]]
+then
+  echo "Status query failed"
+  exit 4
+fi
+running=("Queued" "Starting" "Preparing" "Running" "Finalizing")
+while [[ ${running[*]} =~ $status ]]
+do
+  sleep 8 
+  status=$(az ml job show -n $run_id --query status -o tsv)
+  echo $status
+done
+
+
 # Wait for 3 minute for training job to complete
-sleep 3m 30s
+#sleep 3m 30s
 
 echo 'Training run_ID is: ' $run_id
 
