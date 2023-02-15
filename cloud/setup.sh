@@ -22,7 +22,8 @@ run_id=$(az ml job create -f cloud/training_job.yml --query name -o tsv)
 
 echo 'Training run_ID is: ' $run_id
 
-sleep 1m
+# Wait for 3 minute for training job to complete
+sleep 3m
 
 # Register model
 model_name=rai_hospital_model
