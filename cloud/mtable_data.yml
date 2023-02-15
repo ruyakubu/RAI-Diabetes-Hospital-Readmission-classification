@@ -1,0 +1,7 @@
+$schema: https://azuremlschemas.azureedge.net/latest/MLTable.schema.json
+ml_rai_hospital_training_data:
+  path: ../data/train_dataset.parquet
+  type: mltable
+ml_rai_hospital_testing_data:
+  path: ../data/test_dataset.parquet
+  type: mltable
