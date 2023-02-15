@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Create compute cluster
+# Create compute instance
 echo '------------------------------------------'
-echo 'Creating a Compute Cluster'
+echo 'Creating a Compute Instance'
 az ml compute create -f cloud/cluster-cpu.yml 
 
 
