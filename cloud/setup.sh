@@ -23,7 +23,7 @@ run_id=$(az ml job create -f cloud/training_job.yml --query name -o tsv)
 echo 'Training run_ID is: ' $run_id
 
 # Register model
-model_name=tmp_rai_hospital_model
+model_name=rai_hospital_model
 echo '------------------------------------------'
 echo 'Registering model'
 az ml model create --name $model_name --path "azureml://jobs/$run_id/outputs/model_output" --type mlflow_model
