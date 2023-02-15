@@ -22,6 +22,8 @@ run_id=$(az ml job create -f cloud/training_job.yml --query name -o tsv)
 
 echo 'Training run_ID is: ' $run_id
 
+sleep 1m
+
 # Register model
 model_name=rai_hospital_model
 echo '------------------------------------------'
