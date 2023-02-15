@@ -3,7 +3,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 type: command
 description: Training job for Diabetes Hospital Readmission classifier.
 experiment_name: "rai_diabetes_readmission"
-compute: azureml:trainingcompute
+compute: azureml:cluster-cpu
 
 
 inputs:
