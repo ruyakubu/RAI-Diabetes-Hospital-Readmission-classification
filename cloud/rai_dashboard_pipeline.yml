@@ -14,12 +14,12 @@ inputs:
     mode: download
   model_path:
     type: mlflow_model
-    path: azureml:tmp_rai_hospital_model_crimson_vinegar_8jb2vk34hd:1
-  model_info: "tmp_rai_hospital_model_crimson_vinegar_8jb2vk34hd:1"
+    path: azureml:rai_hospital_model@latest
+  model_info: "rai_hospital_model:1"
 
 settings:
   default_datastore: azureml:workspaceblobstore
-  default_compute: azureml:cluster-cpu
+  default_compute: azureml:clusterai_hospital_modelr-cpu
   continue_on_step_failure: false
 
 jobs:
