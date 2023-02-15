@@ -1,0 +1,22 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+type: command
+description: Training job for Diabetes Hospital Readmission classifier.
+experiment_name: "rai_diabetes_readmission"
+compute: azureml:trainingcompute
+
+
+inputs:
+  training_data:
+    path: azureml:tmp_rai_hospital_training_data:1
+    type: uri_file
+  target_column_name: "readmit_status"
+
+outputs:
+  model_output:
+
+code: ../src
+environment: 
+  image: mcr.microsoft.com/azureml/curated/responsibleai-0.20-ubuntu20.04-py38-cpu:latest
+command: python hospital_training.py --training_data ${{inputs.training_data}} --target_column_name ${{inputs.target_column_name}} --model_output ${{outputs.model_output}}
+
