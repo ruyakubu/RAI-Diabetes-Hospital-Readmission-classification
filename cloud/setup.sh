@@ -61,5 +61,5 @@ echo 'Submitting job to create RAI dashboard....'
 az ml job create --file cloud/rai_dashboard_pipeline.yml
 
 echo '--------------------------------------------------------'
-echo '  Please verify in the resources created in the Azure portal'
+echo '  Please verify that the resources are created in the Azure portal'
 echo '--------------------------------------------------------'
