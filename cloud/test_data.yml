@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+name: tmp_rai_hospital_testing_data
+description: RAI hospital test data
+path: ../data/test_dataset.parquet
+type: uri_file

@@ -3,10 +3,3 @@ name: tmp_rai_hospital_training_data
 description: RAI hospital train data
 path: ../data/train_dataset.parquet
 type: uri_file
-
-name: tmp_rai_hospital_testing_data
-description: RAI hospital test data
-path: ../data/test_dataset.parquet
-type: uri_file
-
-
