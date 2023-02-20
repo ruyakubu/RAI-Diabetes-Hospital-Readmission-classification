@@ -9,7 +9,7 @@ ws_name=$(az config get --local defaults.workspace --query value --output tsv)
 echo '------------------------------------------'
 echo 'Creating a Compute Instance'
 # az ml compute create -f cloud/compute-cpu.yml 
-az ml compute create --name $computename -f cloud/compute-cpu.yml 
+az ml compute create --name $computename --type computeinstance --size STANDARD_DS12_V2
 
 
 # Create dataset
