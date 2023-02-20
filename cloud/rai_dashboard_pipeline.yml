@@ -19,7 +19,6 @@ inputs:
 
 settings:
   default_datastore: azureml:workspaceblobstore
-  default_compute: azureml:cluster-cpu
   continue_on_step_failure: false
 
 jobs:
