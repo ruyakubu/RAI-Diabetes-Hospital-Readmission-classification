@@ -1,6 +1,6 @@
 #!/bin/bash
 
-uuid=$(uuidgen -t)
+uuid=$RANDOM | md5sum | head -c 12
 computename=compute_$uuid
 rg_name=$(az config get --local defaults.group --query value --output tsv)
 ws_name=$(az config get --local defaults.workspace --query value --output tsv)
