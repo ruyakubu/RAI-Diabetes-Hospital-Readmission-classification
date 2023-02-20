@@ -24,7 +24,7 @@ az ml data create -f cloud/test_data.yml
 echo '------------------------------------------'
 echo 'Submitting the training job...'
 
-run_id=$(az ml job create --name my_training_job --resource-group $rg_name --workspace-name $ws_name -f cloud/training_job.yml --query name -o tsv)
+run_id=$(az ml job create --name my_training_job -f cloud/training_job.yml --query name -o tsv)
 
 # wait for job to finish while checking for status
 if [[ -z "$run_id" ]]
@@ -64,7 +64,7 @@ echo 'the model name is: ' $model_name
 echo '------------------------------------------'
 echo 'Submitting job to create RAI dashboard....'
 
-az ml job create --workspace-name $ws_name --workspace-name $ws_name --file cloud/rai_dashboard_pipeline.yml
+az ml job create --file cloud/rai_dashboard_pipeline.yml
 
 echo '--------------------------------------------------------'
 echo '  Please verify that the resources are created in the Azure portal'
