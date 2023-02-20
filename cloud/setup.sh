@@ -1,7 +1,7 @@
 #!/bin/bash
 
 uuid=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 12 | head -n 1)
-computename=compute_$uuid
+computename=compute-$uuid
 rg_name=$(az config get --local defaults.group --query value --output tsv)
 ws_name=$(az config get --local defaults.workspace --query value --output tsv)
 
