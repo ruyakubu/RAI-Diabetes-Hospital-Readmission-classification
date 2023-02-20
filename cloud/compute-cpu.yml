@@ -1,4 +1,3 @@
 $schema: https://azuremlschemas.azureedge.net/latest/computeInstance.schema.json
-name: cluster-cpu
 type: computeinstance
 size: STANDARD_DS12_V2
