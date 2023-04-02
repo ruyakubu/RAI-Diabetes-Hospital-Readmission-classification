@@ -1,17 +1,8 @@
 #!/bin/bash
 
-uuid=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 12 | head -n 1)
-computename=compute-$uuid
+# name of resource group and azure ml workspace from global config setting
 rg_name=$(az config get --local defaults.group --query value --output tsv)
 ws_name=$(az config get --local defaults.workspace --query value --output tsv)
-
-# Create compute instance
-echo '------------------------------------------'
-echo 'Creating a Compute Instance'
-# az ml compute create -f cloud/compute-cpu.yml 
-az ml compute create --name $computename --type computeinstance --size STANDARD_DS12_V2
-echo 'compute name - created: ' $computename
-
 
 # Create dataset
 echo '------------------------------------------'
@@ -19,6 +10,17 @@ echo 'Registering the Training and Testing dataset'
 az ml data create -f cloud/train_data.yml
 
 az ml data create -f cloud/test_data.yml
+
+# generate unique compute name
+uuid=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 12 | head -n 1)
+computename=compute-$uuid
+
+# Create compute instance
+echo '------------------------------------------'
+echo 'Creating a Compute Instance'
+# az ml compute create -f cloud/compute-cpu.yml 
+az ml compute create --name $computename --type computeinstance --size STANDARD_DS12_V2
+echo 'compute name - created: ' $computename
 
 # Bash function to replace compute name in training yaml file
 replace_traincompute_yaml(){ 
