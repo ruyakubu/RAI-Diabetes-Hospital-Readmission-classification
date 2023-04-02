@@ -19,6 +19,16 @@ az ml data create -f cloud/train_data.yml
 
 az ml data create -f cloud/test_data.yml
 
+# Bash function to replace compute name in training yaml file
+replace_traincompute_yaml(){ 
+
+   sed -i "s/<ENTER-COMPUTE-NAME-HERE>/$1/" cloud/training_job.yml
+   
+}
+
+# Replace compute name in yaml file
+replace_traincompute_yaml "$computename"
+
 
 # Train model
 echo '------------------------------------------'
@@ -59,6 +69,16 @@ echo 'Registering model'
 az ml model create --name $model_name --path "azureml://jobs/$run_id/outputs/model_output" --type mlflow_model
 
 echo 'the model name is: ' $model_name
+
+# Bash function to replace compute name in training yaml file
+replace_dashboardcompute_yaml(){ 
+
+   sed -i "s/<ENTER-COMPUTE-NAME-HERE>/$1/" cloud/rai_dashboard_pipeline.yml
+   
+}
+
+# Replace compute name in yaml file
+replace_dashboardcompute_yaml "$computename"
 
 # Submit RAI Dashboard
 echo '------------------------------------------'
