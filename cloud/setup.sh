@@ -10,6 +10,7 @@ echo '------------------------------------------'
 echo 'Creating a Compute Instance'
 # az ml compute create -f cloud/compute-cpu.yml 
 az ml compute create --name $computename --type computeinstance --size STANDARD_DS12_V2
+echo 'compute name - created: ' $computename
 
 
 # Create dataset
@@ -28,6 +29,7 @@ replace_traincompute_yaml(){
 
 # Replace compute name in yaml file
 replace_traincompute_yaml "$computename"
+echo 'job - compute name: ' $computename
 
 
 # Train model
